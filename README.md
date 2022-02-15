@@ -3,7 +3,7 @@
 
 Topaz Video Enhance AI:
 
-    •AI Model Low - CG - None - Proteus Fine Tune
+    •Gaia CG v5
     •Model Parameters Auto (55-9-20-8-28--5)
     •Grain 1.0 - 1.0
     
