@@ -1,4 +1,4 @@
-This is going to be mostly stream of consciousness until/if I decide to turn this into something. This project is to see how well video enhancing models have progressed about 2 years since the last time I put out something I was happy enough to keep. In the past, I was using [Video2x](https://github.com/k4yt3x/video2x) (and in the before-before times, I was using .bat scripts, [waifu2x](https://github.com/nagadomi/waifu2x), and ffmpeg to compile frames into video - we don't talk about those dark times) to upscale great media that hasn't held up to now or that could only be found as second-hand encodes from decades ago. Animation has always been the only real viable genre for this, although the last year or two Ive seen others using super resolution upscaling frameworks on non-animation. For this, Im using Topaz Video Enhance AI, since it's been leading in quality output in compartison to the free, OSS. I may try to use an updated version of Real-ESRGAN to compare eventually but as of now (early 2022), I believe Topaz to be my top pick.
+This is going to be mostly stream of consciousness until/if I decide to turn this into something. This project is to see how well video enhancing models have progressed about 2 years since the last time I put out something I was happy enough to keep. In the past, I was using [Video2x](https://github.com/k4yt3x/video2x) (and in the before-before times, I was using .bat scripts, [waifu2x](https://github.com/nagadomi/waifu2x), and ffmpeg to compile frames into video - we don't talk about those dark times) to upscale great media that hasn't held up to now or that could only be found as second-hand encodes from decades ago. Animation has always been the only real viable genre for this, although the last year or two Ive seen others using super resolution upscaling frameworks on non-animation. For this, Im using Topaz Video Enhance AI, since it's been leading in quality output in compartison to the free, OSS. I may try to use an updated version of Real-ESRGAN to compare eventually but as of now (early 2022), Topaz is my pick.
 
 Topaz Video Enhance AI:
 
@@ -68,7 +68,18 @@ Here's some of the initial "quality" tests:<br>
 <br>
 </p>
 
-    
+```
+ffmpeg `
+-r 24000/1001 -i '<INPUT>' `
+-r 24000/1001 -i '<INPUT>' `
+-filter_complex "[0]crop=iw/2:ih:0:0[left];`
+[1]crop=iw/2:ih:iw/2:0[right];`
+[left][right]scale2ref[old][new];`
+[old]pad=(iw+2):color=red[L];`
+[L][new]hstack=inputs=2[all]" `
+-map "[all][1:a]" -c:v libx265 -preset slow -crf 24 `
+-c:a libopus -b:a 128k '<OUTPUT>' -y
+```
     
 Refs/related:
 <br>[DeInterlacing/DeTelecining Guide](https://www.techpowerup.com/forums/threads/hats-ntsc-guide-to-dvd-bd-ripping.221062/)
